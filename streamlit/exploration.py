@@ -1,3 +1,4 @@
+import pickle
 import urllib
 import re
 import matplotlib.pyplot as plt
@@ -5,7 +6,6 @@ from collections import defaultdict, OrderedDict
 import streamlit as st
 from wordcloud import WordCloud
 from dataclasses import dataclass
-import pickle5 as pickle
 import numpy as np
 from operator import itemgetter
 import json
@@ -200,8 +200,8 @@ class LocalResources(object):
 class MainResources(object):
     pass
 
-
-@st.experimental_singleton
+import os
+@st.cache_resource
 def get_main_resources(json_config):
     model_json = json.loads(_jsonnet.evaluate_file(json_config))
     main_res = MainResources()
@@ -245,7 +245,7 @@ else:
 
     
 with st.sidebar:
-    st.sidebar.image("/home/morp/lm_debugger/img/lmdebugger_logo.png", width=140)
+    st.sidebar.image("img/lmdebugger_logo.png", width=140)
     st.header('Value Search by Keyword')
     kw, num_values = get_input_keywords()
     if (not kw or st.session_state.get('btn_visualize', False) or st.session_state.get('btn_cluster', False)

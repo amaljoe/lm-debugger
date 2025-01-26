@@ -9,7 +9,7 @@ import json
 
 from elasticsearch.helpers import bulk
 
-from es_index.es_utils import get_esclient
+from es_utils import get_esclient
 
 
 def make_documents(projections_path, es_index_name):
@@ -23,7 +23,6 @@ def make_documents(projections_path, es_index_name):
         doc = {
             '_op_type': 'create',
             '_index': es_index_name,
-            '_type': '_doc',
             '_id': doc_id,
             '_source': {
                 'layer': int(layer),
@@ -69,7 +68,7 @@ if __name__ == "__main__":
             }
         }
     }
-
+    es.indices.delete(index=es_index_name)
     # Create an index
     res = es.indices.create(index=es_index_name, mappings=mappings, settings=settings)
 
